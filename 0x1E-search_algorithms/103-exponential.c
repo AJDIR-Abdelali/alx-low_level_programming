@@ -5,21 +5,35 @@ int binary_search_main(int *array, size_t low, size_t high, int value);
 void print_array_range(int *array, size_t low, size_t high);
 
 /**
- * binary_search - search for a number in an array of integers
- * using the binary search algorithm
+ * exponential_search - searches an array of integers using the exponential
+ * search algorithm
  *
- * @array: pointer to the first element of the array to search in
- * @size: number of elements in the array
- * @value: the value to search for
+ * @array: pointer to the first element of the array to be searched
+ * @size: size of the array
+ * @value: value to search for
  *
- * Return: index where the value is located or -1 if array is NULL
- * or value can't be found
+ * Return: index at which the value is found, or -1 if array is null or
+ * value cannot be found
  */
-int binary_search(int *array, size_t size, int value)
+int exponential_search(int *array, size_t size, int value)
 {
+	size_t bound, bound_half;
+
 	if (!array)
 		return (-1);
-	return (binary_search_main(array, 0, size - 1, value));
+	bound = 1;
+	while (bound < size && array[bound] < value)
+	{
+		printf("Value checked array[%ld] = [%d]\n", bound, array[bound]);
+		bound *= 2;
+	}
+
+	bound = bound > size - 1 ? size - 1 : bound;
+	bound_half = bound % 2 == 0 ? bound / 2 : bound / 2 + 1;
+	printf("Value found between indexes [%ld] and [%ld]\n",
+			bound_half, bound);
+
+	return (binary_search_main(array, bound_half, bound, value));
 }
 
 /**
